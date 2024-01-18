@@ -36,7 +36,7 @@ Method BajaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.BajaPacienteRequ
 }
 
 /// Método que obtiene los datos de un paciente a partir de su ID
-Method buscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse) As %Status
+Method BuscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse) As %Status
 {
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse).%New()
 
@@ -62,7 +62,7 @@ Method buscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
 }
 
 /// Método que obtiene los datos de un paciente a partir de su ID
-Method listarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse) As %Status
+Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse) As %Status
 {
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ListarPacientesResponse).%New()
 
@@ -99,10 +99,10 @@ XData MessageMap
         <Method>BajaPaciente</Method>
     </MapItem>
     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest">
-        <Method>buscarPacientePorID</Method>
+        <Method>BuscarPacientePorID</Method>
     </MapItem>
     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.ListarPacientesRequest">
-        <Method>listarPacientes</Method>
+        <Method>ListarPacientes</Method>
     </MapItem>
 
 </MapItems>

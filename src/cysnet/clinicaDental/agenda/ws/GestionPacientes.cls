@@ -42,7 +42,7 @@ Method BajaPaciente(ID As %Integer) As cysnet.clinicaDental.agenda.msg.BajaPacie
 }
 
 /// Método que obtiene los datos de un paciente a partir de su ID
-Method buscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse [ WebMethod ]
+Method BuscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse [ WebMethod ]
 {
 	#dim req As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest
 	#dim rsp As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse
@@ -56,7 +56,7 @@ Method buscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agend
 }
 
 /// Método para listar todos los pacientes
-Method listarPacientes() As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse [ WebMethod ]
+Method ListarPacientes() As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse [ WebMethod ]
 {
 	#dim req As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest
 	#dim rsp As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse
