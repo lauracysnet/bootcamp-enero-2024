@@ -40,4 +40,17 @@ Method buscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agend
 	Quit rsp
 }
 
+/// Método para listar todos los pacientes
+Method listarPacientes() As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ListarPacientesRequest).%New()
+	
+	Do ..SendRequestSync("PacientesSQL", req, .rsp)
+	
+	Quit rsp
+}
+
 }

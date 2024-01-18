@@ -50,6 +50,34 @@ Method buscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
     Quit $$$OK
 }
 
+/// Método que obtiene los datos de un paciente a partir de su ID
+Method listarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse) As %Status
+{
+    Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ListarPacientesResponse).%New()
+
+    Set pacientes = ##class(%ListOfObjects).%New()
+
+    Set stm = ##class(%SQL.Statement).%New()
+    Do stm.%Prepare("SELECT ID, nombre, apellidos, email, baja, permiteNotificaciones FROM cysnet_clinicaDental_agenda_data.Pacientes")
+
+    Set rs = stm.%Execute()
+
+    While rs.%Next() {
+        Set paciente = ##class(cysnet.clinicaDental.agenda.data.Pacientes).%New()
+        // Set paciente.idPaciente = rs.ID
+        Set paciente.nombre = rs.nombre
+        Set paciente.apellidos = rs.apellidos
+        Set paciente.email = rs.email
+        Set paciente.baja = rs.baja
+        Set paciente.permiteNotificaciones = rs.permiteNotificaciones
+        Do pacientes.Insert(paciente)
+    }
+
+    Set pResponse.pacientes = pacientes
+    
+    Quit $$$OK
+}
+
 XData MessageMap
 {
 <MapItems>
@@ -58,6 +86,9 @@ XData MessageMap
     </MapItem>
     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest">
         <Method>buscarPacientePorID</Method>
+    </MapItem>
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.ListarPacientesRequest">
+        <Method>listarPacientes</Method>
     </MapItem>
 
 </MapItems>
