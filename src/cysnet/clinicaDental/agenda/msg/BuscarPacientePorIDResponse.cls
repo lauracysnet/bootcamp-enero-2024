@@ -5,6 +5,10 @@ Property idPaciente As %Integer;
 
 Property mensaje As %String(MAXLEN = "");
 
+Property exito As %Boolean;
+
+Property error As %String(MAXLEN = "");
+
 Storage Default
 {
 <Data name="BuscarPacientePorIDResponseDefaultData">
@@ -29,6 +33,12 @@ Storage Default
 </Value>
 <Value name="7">
 <Value>mensaje</Value>
+</Value>
+<Value name="8">
+<Value>exito</Value>
+</Value>
+<Value name="9">
+<Value>error</Value>
 </Value>
 </Data>
 <DefaultData>BuscarPacientePorIDResponseDefaultData</DefaultData>

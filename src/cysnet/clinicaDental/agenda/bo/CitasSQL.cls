@@ -20,10 +20,11 @@ Method cancelarCita(pRequest As cysnet.clinicaDental.agenda.msg.CancelarCitaRequ
     quit $$$OK
 }
 
-Method altaCitas(pRequest As cysnet.clinicaDental.agenda.msg.AltaCitasRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.AltaCitasRespose) As %Status
+Method altaCitas(pRequest As cysnet.clinicaDental.agenda.msg.AltaCitasRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.AltaCitasResponse) As %Status
 {
     #dim sc As %Status = $$$OK
 
+    /*
     Set stm = ##class(%SQL.Statement).%New()
     Do stm.%Prepare("SELECT * FROM cysnet_clinicaDental_agenda_data.Citas WHERE idPaciente = ?")
     Set rs =  stm.%Execute(pRequest.idPaciente)
@@ -31,13 +32,61 @@ Method altaCitas(pRequest As cysnet.clinicaDental.agenda.msg.AltaCitasRequest, O
     If (rs.%Next(.sc)) {
       Quit sc
     }
-   
+    */
+
     Set stm = ##class(%SQL.Statement).%New()
     do stm.%Prepare("INSERT INTO cysnet_clinicaDental_agenda_data.Citas (idPaciente, descCita, fechaCita, codEstado) VALUES (?,?,?,?) ")
     Set rs = stm.%Execute(pRequest.idPaciente, pRequest.descCita, pRequest.fechaCita, 1)
 
-        set rs = stm.%Execute()
-        quit sc
+    set rs = stm.%Execute()
+    quit sc
+}
+
+/// actualizar el paciente
+Method ModificarCita(pRequest As cysnet.clinicaDental.agenda.msg.ModificarCitaRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse) As %Status
+{
+  #dim stm As %SQL.Statement
+  #dim rs As %SQL.StatementResult
+  
+  Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ModificarCitaResponse).%New()
+  Set pResponse.mensaje = "Se actualiza ID:"_pRequest.ID
+  
+  &sql(UPDATE cysnet_clinicaDental_agenda_data.Citas SET fechaCita = :pRequest.fechaCita where id = :pRequest.ID)
+  
+  Return $$$OK
+}
+
+Method ListarCitas(pRequest As cysnet.clinicaDental.agenda.msg.ListarCitasRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ListarCitasResponse) As %Status
+{
+    Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ListarCitasResponse).%New()
+
+    Set pResponse.citas = ##class(%ListOfObjects).%New()
+
+    Set stm = ##class(%SQL.Statement).%New()
+
+    if (pRequest.mostrarCanceladas = 1){
+      Set where = " AND codEstado <> 4"
+    }
+      else{
+      Set where = ""
+    }
+
+    Do stm.%Prepare("select idPaciente, descCita, fechaCita, codEstado from cysnet_clinicaDental_agenda_data.Citas  where idPaciente  = ? "_where)
+
+    Set rs = stm.%Execute(pRequest.idPaciente)
+
+    While rs.%Next() {
+        Set cita = ##class(cysnet.clinicaDental.agenda.data.Citas).%New()
+        // Set paciente.idPaciente = rs.ID
+        Set cita.idPaciente = rs.idPaciente
+        Set cita.descCita = rs.descCita
+        Set cita.fechaCita = rs.fechaCita
+        Set cita.codEstado = rs.codEstado
+        Do pResponse.citas.Insert(cita)
+        kill cita
+    }
+
+    Quit $$$OK
 }
 
 XData MessageMap
@@ -46,8 +95,14 @@ XData MessageMap
     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.CancelarCitaRequest">
         <Method>cancelarCita</Method>
     </MapItem>
-     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.AltaCitasRequest">
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.AltaCitasRequest">
         <Method>altaCitas</Method>
+    </MapItem>
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.ModificarCitaRequest">
+        <Method>ModificarCita</Method>
+    </MapItem>
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.ListarCitasRequest">
+        <Method>ListarCitas</Method>
     </MapItem>
 </MapItems>
 }

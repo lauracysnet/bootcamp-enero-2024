@@ -23,10 +23,10 @@ Method cancelarCita(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.Cance
 	quit response
 }
 
-Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.AltaCitasRespose [ WebMethod ]
+Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.AltaCitasResponse [ WebMethod ]
 {
 	#dim req As cysnet.clinicaDental.agenda.msg.AltaCitasRequest
-	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaCitasRespose
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaCitasResponse
 	
 	Set req = ##class(cysnet.clinicaDental.agenda.msg.AltaCitasRequest).%New()
 	Set req.idPaciente = idPaciente
@@ -34,6 +34,60 @@ Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %Time
     Set req.fechaCita = fechaCita
 	
 	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	
+	Quit rsp
+}
+
+Method ModificarCita(idCita As %Integer, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ModificarCitaRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ModificarCitaRequest).%New()
+  Set req.ID = idCita
+  Set req.fechaCita = fechaCita
+	
+	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	
+	Quit rsp
+}
+
+Method ListarCitas(idPaciente As %Integer, mostrarCanceladas As %Boolean) As cysnet.clinicaDental.agenda.msg.ListarCitasResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ListarCitasRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ListarCitasResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ListarCitasRequest).%New()
+  Set req.idPaciente = idPaciente
+  Set req.mostrarCanceladas = mostrarCanceladas
+	
+	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	
+	Quit rsp
+}
+
+Method AdmitirPaciente(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.AdmitirPacienteRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.AdmitirPacienteRequest).%New()
+  Set req.idCita = idCita
+	
+	Do ..SendRequestSync("ProcesoAdmisionesCodigo", req, .rsp)
+	
+	Quit rsp
+}
+
+Method AltaPaciente(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.AltaPacienteResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.AltaPacienteRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaPacienteResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.AltaPacienteRequest).%New()
+  Set req.idCita = idCita
+	
+	Do ..SendRequestSync("ProcesoAdmisionesCodigo", req, .rsp)
 	
 	Quit rsp
 }
