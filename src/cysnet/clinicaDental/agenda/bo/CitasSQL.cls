@@ -7,6 +7,86 @@ Property Adapter As EnsLib.SQL.OutboundAdapter;
 
 Parameter INVOCATION = "Queue";
 
+Method TraerCita(pRequest As cysnet.clinicaDental.agenda.msg.TraerCitaRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.TraerCitaResponse) As %Status
+{
+  #dim sc As %Status = $$$OK
+  #dim rs As EnsLib.SQL.GatewayResultSet
+  Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.TraerCitaResponse).%New()
+  Set pResponse.exito = 1
+  
+  Try {
+    Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado  from ClinicaDental.Cita where IdCita = ?"
+    Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idCita)
+    If ($$$ISOK(sc)) {
+      If (rs.Next(.sc)) {
+          Quit:$$$ISERR(sc)
+          Set pResponse.IdCita = rs.Get("IdCita")
+          Set pResponse.IdPaciente = rs.Get("IdPaciente")
+          Set pResponse.DescCita = rs.Get("DescCita")
+          Set pResponse.FechaCita = rs.Get("FechaCita")
+          Set pResponse.CodEstado = rs.Get("CodEstado")
+      }Else {
+        Set pResponse.mensaje = "no se encontro cita"
+      }
+    }
+  } Catch (err) {
+    If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
+        Set sc = err.status
+    } Else {
+        Set sc = $SYSTEM.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
+    }
+  }
+  
+  If ($$$ISERR(sc)) {
+      Set pResponse.exito = 0
+      Set pResponse.mensaje = $SYSTEM.Status.GetErrorText(sc)
+  }
+  Quit $$$OK
+}
+
+Method UltimaCitaDePacientePorEstado(pRequest As cysnet.clinicaDental.agenda.msg.UltimaCitaDePacientePorEstadoRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.UltimaCitaDePacientePorEstadoResponse) As %Status
+{
+  #dim sc As %Status = $$$OK
+  #dim rs As EnsLib.SQL.GatewayResultSet
+  Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.UltimaCitaDePacientePorEstadoResponse).%New()
+  Set pResponse.exito = 1
+  
+  Try {
+    Set and = ""
+    if (pRequest.codEstado > 0){
+      Set and = " AND CodEstado = "_pRequest.codEstado_" "
+    }
+    Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado from ClinicaDental.Cita where IdPaciente = 1 "_and_" order by FechaCita DESC limit 1"
+    Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
+    If ($$$ISOK(sc)) {
+      If (rs.Next(.sc)) {
+          Quit:$$$ISERR(sc)
+          Set pResponse.IdCita = rs.Get("IdCita")
+          Set pResponse.IdPaciente = rs.Get("IdPaciente")
+          Set pResponse.DescCita = rs.Get("DescCita")
+          Set pResponse.FechaCita = rs.Get("FechaCita")
+          Set pResponse.CodEstado = rs.Get("CodEstado")
+      }Else {
+        Set pResponse.mensaje = "no se encontro cita para enste paciente"
+      }
+    }
+  } Catch (err) {
+    If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
+        Set sc = err.status
+    } Else {
+        Set sc = $SYSTEM.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
+    }
+  }
+  
+  If ($$$ISERR(sc)) {
+      Set pResponse.exito = 0
+      Set pResponse.mensaje = $SYSTEM.Status.GetErrorText(sc)
+  }
+  Quit $$$OK
+}
+
 /// Método para cancelar una cita
 Method cancelarCita(pRequest As cysnet.clinicaDental.agenda.msg.CancelarCitaRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.CancelarCitaResponse) As %Status
 {
@@ -175,6 +255,12 @@ XData MessageMap
     </MapItem>
     <MapItem MessageType="cysnet.clinicaDental.agenda.msg.ListarCitasRequest">
         <Method>ListarCitas</Method>
+    </MapItem>
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.TraerCitaRequest">
+        <Method>TraerCita</Method>
+    </MapItem>
+    <MapItem MessageType="cysnet.clinicaDental.agenda.msg.UltimaCitaDePacientePorEstadoRequest">
+        <Method>UltimaCitaDePacientePorEstado</Method>
     </MapItem>
 </MapItems>
 }
