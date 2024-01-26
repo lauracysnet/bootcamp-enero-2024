@@ -1,7 +1,7 @@
 Class cysnet.clinicaDental.agenda.msg.ExisteAdmisionResponse Extends Ens.Response
 {
 
-Property existe As %Boolean;
+Property IdAdmision As %Integer;
 
 Property exito As %Boolean;
 
@@ -12,7 +12,7 @@ Storage Default
 <Data name="ExisteAdmisionResponseDefaultData">
 <Subscript>"ExisteAdmisionResponse"</Subscript>
 <Value name="1">
-<Value>existe</Value>
+<Value>IdAdmision</Value>
 </Value>
 <Value name="2">
 <Value>exito</Value>

@@ -10,19 +10,20 @@ Method OnRequest(pRequest As cysnet.clinicaDental.agenda.msg.AdmitirPacienteRequ
   
   Set existeAdmisionRequest.idCita = pRequest.idCita
   Do ..SendRequestSync("AdmisionesSQL", existeAdmisionRequest, .existeAdmisionResponse)
+  #dim AdmisionActiva As  %Boolean = existeAdmisionResponse.IdAdmision > 0
 
   If (pRequest.%ClassName() = "AdmitirPacienteRequest"){
 
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse).%New()
 
-    If (existeAdmisionResponse.existe) {
-      Set pResponse.mensaje = "Ya existe un adminsion"
+    If (AdmisionActiva) {
+      Set pResponse.mensaje = "Ya existe un adminsion vigente"
     }Else{
       Do ..SendRequestSync("AdmisionesSQL", pRequest, .pResponse)
     }
   } ElseIf (pRequest.%ClassName() = "AltaPacienteRequest") {
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.AltaPacienteResponse).%New()
-    If (existeAdmisionResponse.existe) {
+    If (AdmisionActiva) {
       Do ..SendRequestSync("AltasSQL", pRequest, .pResponse)
     }Else{
       Set pResponse.mensaje = "No existe un admicion vigente para la cita :"_pRequest.idCita
