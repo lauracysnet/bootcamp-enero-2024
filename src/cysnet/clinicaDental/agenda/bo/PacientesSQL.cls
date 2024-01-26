@@ -17,7 +17,7 @@ Method BuscarPacientePorEmail(pRequest As cysnet.clinicaDental.agenda.msg.Buscar
   
   Try {
     set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    set sql = "SELECT idPaciente,nombre,apellidos,email,baja,permiteNotificaciones FROM Pacientes WHERE email = ? "
+    set sql = "SELECT idPaciente,nombre,apellidos,email,baja,permiteNotificaciones FROM Paciente WHERE email = ? "
 
     set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email)
     if ($$$ISOK(sc)) {
@@ -56,7 +56,7 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
   Set pResponse.exito = 1
   
   Try {
-    set sql = "INSERT INTO Pacientes (Nombre,Apellidos,Email,PermiteNotificaciones,Baja) VALUES (?,?,?,?,?)"
+    set sql = "INSERT INTO Paciente (Nombre,Apellidos,Email,PermiteNotificaciones,Baja) VALUES (?,?,?,?,?)"
     set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, 1, 0)
     if ($$$ISOK(sc)) {
       Set pResponse.mensaje = "Se crea"
@@ -88,7 +88,7 @@ Method BajaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.BajaPacienteRequ
   Set pResponse.mensaje = "Se da de baja al ID:"_pRequest.ID
   Set pResponse.exito = 1
   Try{
-    set sql = "UPDATE Pacientes  SET baja = 1 where idPaciente = ?"
+    set sql = "UPDATE Paciente SET baja = 1 where idPaciente = ?"
     set sc = ..Adapter.ExecuteUpdate(pRequest.ID, sql, pRequest.ID)
     if ($$$ISOK(sc)) {
       Set pResponse.mensaje = "Se modifico"
@@ -118,14 +118,14 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
 
   Try{
     set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    set sql = "SELECT idPaciente FROM Pacientes WHERE email = ?  and idPaciente <> ?"
+    set sql = "SELECT idPaciente FROM Paciente WHERE email = ?  and idPaciente <> ?"
     set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email, pRequest.ID)
     if ($$$ISOK(sc)) {
       If (rs.%Next(.sc)) {
         Set pResponse.mensaje = "El email ya esta en uso"
       } Else {
         Set pResponse.mensaje = "Se actualiza ID:"_pRequest.ID
-        set sql = "UPDATE Pacientes  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
+        set sql = "UPDATE Paciente  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
         set sc = ..Adapter.ExecuteUpdate(pRequest.ID, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
 
         if ($$$ISOK(sc)) {
@@ -170,7 +170,7 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
         Set where = " WHERE  baja = 0"
       }
 
-      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Pacientes "_where
+      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Paciente "_where
       set sc = ..Adapter.ExecuteQuery(.rs, sql)
       if ($$$ISOK(sc)) {
         While rs.%Next(.sc) {
@@ -212,7 +212,7 @@ Method BuscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
     Set pResponse.exito = 1
     Try{
       set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Pacientes WHERE idPaciente = ?"
+      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Paciente WHERE idPaciente = ?"
       set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
       If ($$$ISOK(sc)) {
         If (rs.%Next(.sc)) {
