@@ -18,7 +18,7 @@ Method cancelarCita(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.Cance
     set request = ##class(cysnet.clinicaDental.agenda.msg.CancelarCitaRequest).%New()
     set request.idCita = idCita
 
-	do ..SendRequestSync("CitasSQL", request, .response)
+	do ..SendRequestSync("ProcesoCitas", request, .response)
 	
 	quit response
 }
@@ -33,7 +33,7 @@ Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %Time
     Set req.descCita = descCita
     Set req.fechaCita = fechaCita
 	
-	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
 	
 	Quit rsp
 }
@@ -47,7 +47,7 @@ Method ModificarCita(idCita As %Integer, fechaCita As %TimeStamp) As cysnet.clin
   Set req.ID = idCita
   Set req.fechaCita = fechaCita
 	
-	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
 	
 	Quit rsp
 }
@@ -61,7 +61,7 @@ Method ListarCitas(idPaciente As %Integer, mostrarCanceladas As %Boolean) As cys
   Set req.idPaciente = idPaciente
   Set req.mostrarCanceladas = mostrarCanceladas
 	
-	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
 	
 	Quit rsp
 }
