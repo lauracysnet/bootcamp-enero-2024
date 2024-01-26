@@ -180,18 +180,17 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
       set sc = ..Adapter.ExecuteQuery(.rs, sql)
       if ($$$ISOK(sc)) {
         While rs.%Next(.sc) {
-            Set paciente = ##class(cysnet.clinicaDental.agenda.data.Pacientes).%New()
+            Set paciente = ##class(cysnet.clinicaDental.agenda.msg.struct.Paciente).%New()
            // Set paciente.idPaciente = rs.ID
             Set paciente.nombre = rs.Get("nombre")
             Set paciente.apellidos = rs.Get("apellidos")
             Set paciente.email = rs.Get("email")
             Set paciente.baja = rs.Get("baja")
             Set paciente.permiteNotificaciones = rs.Get("permiteNotificaciones")
-            Do pacientes.Insert(paciente)
+            do pResponse.pacientes.Insert(paciente)
             Kill paciente
         }
       }
-      Set pResponse.pacientes = pacientes
     }Catch(err){
       If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
         Set sc = err.status

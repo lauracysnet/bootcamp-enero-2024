@@ -1,7 +1,7 @@
 Class cysnet.clinicaDental.agenda.msg.ListarPacientesResponse Extends Ens.Response
 {
 
-Property pacientes As list Of cysnet.clinicaDental.agenda.data.Pacientes;
+Property pacientes As list Of cysnet.clinicaDental.agenda.msg.struct.Paciente;
 
 Property mensaje As %String(MAXLEN = "");
 
