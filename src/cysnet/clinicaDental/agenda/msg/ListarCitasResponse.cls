@@ -1,7 +1,7 @@
 Class cysnet.clinicaDental.agenda.msg.ListarCitasResponse Extends Ens.Response
 {
 
-Property citas As list Of cysnet.clinicaDental.agenda.data.Citas;
+Property citas As list Of cysnet.clinicaDental.agenda.msg.struct.infoCita;
 
 Property mensaje As %String(MAXLEN = "");
 
