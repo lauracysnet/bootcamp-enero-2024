@@ -34,7 +34,7 @@ Method ExisteAdmision(pRequest As cysnet.clinicaDental.agenda.msg.ExisteAdmision
     Set pResponse.exito = 0
     Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
   }
-  Return $$$OK
+  Quit $$$OK
 }
 
 /// admitir el paciente
@@ -50,8 +50,8 @@ Method AdmitirPaciente(pRequest As cysnet.clinicaDental.agenda.msg.AdmitirPacien
       If (SQLCODE = 0) {
         Set pResponse.mensaje = "Se crea admision "_%ROWID
       } Else {
-        set pResponse.exito = 0
-        set pResponse.error = $System.SQL.Functions.SQLCODE(SQLCODE)
+        Set pResponse.exito = 0
+        Set pResponse.error = $SYSTEM.SQL.Functions.SQLCODE(SQLCODE)
       }
   }
   Catch err {
@@ -65,7 +65,7 @@ Method AdmitirPaciente(pRequest As cysnet.clinicaDental.agenda.msg.AdmitirPacien
     Set pResponse.exito = 0
     Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
   }
-  Return $$$OK
+  Quit $$$OK
 }
 
 XData MessageMap
