@@ -1,25 +1,30 @@
 Class cysnet.clinicaDental.agenda.bo.AdmisionesSQL Extends Ens.BusinessOperation
 {
 
+Parameter ADAPTER = "EnsLib.SQL.OutboundAdapter";
+
+Property Adapter As EnsLib.SQL.OutboundAdapter;
+
+Parameter INVOCATION = "Queue";
+
 Method ExisteAdmision(pRequest As cysnet.clinicaDental.agenda.msg.ExisteAdmisionRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.ExisteAdmisionResponse) As %Status
 {
   #dim sc As %Status = $$$OK
-  #dim stm As %SQL.Statement
-  #dim rs As %SQL.StatementResult
+  #dim rs As EnsLib.SQL.GatewayResultSet
 
   Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ExisteAdmisionResponse).%New()
   Set pResponse.exito = 1
-  Set pResponse.existe = 0
 
   Try {
-    Set stm = ##class(%SQL.Statement).%New()
-    Do stm.%Prepare("SELECT ID FROM cysnet_clinicaDental_agenda_data.Admisiones WHERE idCita = ?")
-
-    Set rs = stm.%Execute(pRequest.idCita)
+    Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+    Set sql = "SELECT IdAdmision FROM ClinicaDental.Admision WHERE idCita = ?"
+    Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idCita)
+    
     If ($$$ISOK(sc)) {
-      If (rs.%Next(.sc)) {
-        Quit:$$$ISERR(sc)
-        Set pResponse.existe = 1
+      If (rs.Next(.sc)) {
+          Quit:$$$ISERR(sc)
+          Set pResponse.IdAdmision = rs.Get("IdAdmision")
+      }else{
       }
     }
   }
@@ -45,14 +50,20 @@ Method AdmitirPaciente(pRequest As cysnet.clinicaDental.agenda.msg.AdmitirPacien
   Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse).%New()
   Set pResponse.exito = 1
   Try {
-      &sql(INSERT INTO cysnet_clinicaDental_agenda_data.Admisiones (idCita,fechaAdmision,indEnviada)
-      VALUES (:pRequest.idCita,now(),0))
-      If (SQLCODE = 0) {
-        Set pResponse.mensaje = "Se crea admision "_%ROWID
-      } Else {
-        Set pResponse.exito = 0
-        Set pResponse.error = $SYSTEM.SQL.Functions.SQLCODE(SQLCODE)
-      }
+    #dim numRows As %Integer = 0
+    
+    Set sql = "INSERT INTO ClinicaDental.Admision (idCita,fechaAdmision,indEnviada) VALUES (?,now(),0)"
+    
+    Set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.idCita)
+    If ($$$ISOK(sc)) {
+       If (numRows = 0) {
+         Set pResponse.exito = 0
+         Set pResponse.error = ""
+       }Else{
+        ///Set newId = ..Adapter.%GetResult()
+        Set pResponse.mensaje = "Se crea admision " ///_%newId
+       }
+    }
   }
   Catch err {
     If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
