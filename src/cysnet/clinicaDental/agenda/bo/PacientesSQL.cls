@@ -128,7 +128,6 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
       If (rs.%Next(.sc)) {
         Set pResponse.mensaje = "El email ya esta en uso"
       } Else {
-        Set pResponse.mensaje = "Se actualiza ID:"_pRequest.ID
         set sql = "UPDATE Paciente  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
         set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
         
@@ -137,7 +136,7 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
             Set pResponse.exito = 0
             Set pResponse.error = "No se ha modificado el paciente" 
           }else{
-            Set pResponse.error = "Se ha modificado el paciente"  
+            Set pResponse.mensaje = "Se actualizo ID:"_pRequest.ID
           }
         } 
       }
