@@ -59,11 +59,12 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
     set sql = "INSERT INTO Paciente (Nombre,Apellidos,Email,PermiteNotificaciones,Baja) VALUES (?,?,?,?,?)"
     set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, 1, 0)
     if ($$$ISOK(sc)) {
-      Set pResponse.mensaje = "Se crea"
-    }else {
-      Set pResponse.exito = 0
-      Set pResponse.error = "No se ha guardado el paciente"
-      
+      if (numRows = 0) {
+        Set pResponse.exito = 0
+        Set pResponse.error = "No se ha guardado el paciente"
+      }else{
+        Set pResponse.mensaje = "Se crea"
+      }
     }
   } catch (err) {
     If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
@@ -84,18 +85,20 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
 Method BajaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.BajaPacienteRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.BajaPacienteResponse) As %Status
 {
   #dim sc As %Status = $$$OK
+   #dim numRows As %Integer = 0
  Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.BajaPacienteResponse).%New()
   Set pResponse.mensaje = "Se da de baja al ID:"_pRequest.ID
   Set pResponse.exito = 1
   Try{
     set sql = "UPDATE Paciente SET baja = 1 where idPaciente = ?"
-    set sc = ..Adapter.ExecuteUpdate(pRequest.ID, sql, pRequest.ID)
+    set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.ID)
     if ($$$ISOK(sc)) {
-      Set pResponse.mensaje = "Se modifico"
-    }else {
-      Set pResponse.exito = 0
-      Set pResponse.error = "No se ha modificado el paciente"
-      
+      if (numRows = 0) {
+        Set pResponse.exito = 0
+        Set pResponse.error = "No se ha modificado el paciente"
+      }else{
+        Set pResponse.mensaje = "Se modifico"
+      }
     }
   }Catch(err){
     If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
@@ -112,6 +115,7 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
 {
   #dim sc As %Status = $$$OK
   #dim rs As EnsLib.SQL.GatewayResultSet
+  #dim numRows As %Integer = 0
   
   Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ModificarPacienteResponse).%New()
   set pResponse.exito = 1
@@ -126,14 +130,16 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
       } Else {
         Set pResponse.mensaje = "Se actualiza ID:"_pRequest.ID
         set sql = "UPDATE Paciente  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
-        set sc = ..Adapter.ExecuteUpdate(pRequest.ID, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
-
+        set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
+        
         if ($$$ISOK(sc)) {
-          Set pResponse.mensaje = "Se modifico el paciente"
-        }else {
-          Set pResponse.exito = 0
-          Set pResponse.error = "No se ha modificado el paciente"  
-        }
+           if (numRows = 0) {
+            Set pResponse.exito = 0
+            Set pResponse.error = "No se ha modificado el paciente" 
+          }else{
+            Set pResponse.error = "Se ha modificado el paciente"  
+          }
+        } 
       }
     }
   }Catch(err){
@@ -185,6 +191,7 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
             Kill paciente
         }
       }
+      Set pResponse.pacientes = pacientes
     }Catch(err){
       If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
         Set sc = err.status
@@ -197,7 +204,7 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
         set pResponse.exito = 0
         set pResponse.error = $System.Status.GetErrorText(sc)
     }
-    Set pResponse.pacientes = pacientes
+    
 
     Quit $$$OK
 }
