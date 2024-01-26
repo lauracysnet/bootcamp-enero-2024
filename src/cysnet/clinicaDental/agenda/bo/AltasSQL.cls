@@ -20,7 +20,6 @@ Method AltaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.AltaPacienteRequ
     Set sql = "INSERT INTO ClinicaDental.Alta (idCita,fechaAlta,indEnviada) VALUES (?,now(),0)"
     
     Set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.idCita)
-    $$$LOGINFO(numRows)
     If ($$$ISOK(sc)) {
       If (numRows = 0) {
         Set pResponse.exito = 0
