@@ -31,7 +31,7 @@ XData ProductionDefinition
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
   </Item>
   <Item Name="PacientesSQL" Category="" ClassName="cysnet.clinicaDental.agenda.bo.PacientesSQL" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
-<Setting Target="Adapter" Name="Credentials">MySQL</Setting>
+    <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
@@ -56,6 +56,31 @@ XData ProductionDefinition
   <Item Name="Ens.Alert" Category="" ClassName="EnsLib.EMail.AlertOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="IncludeDetails">1</Setting>
     <Setting Target="Adapter" Name="Credentials">CuentaGmail</Setting>
+    <Setting Target="Adapter" Name="SMTPPort">587</Setting>
+    <Setting Target="Adapter" Name="SMTPServer">smtp.gmail.com</Setting>
+    <Setting Target="Adapter" Name="SSLConfig">ISC.FeatureTracker.SSL.Config*</Setting>
+  </Item>
+  <Item Name="ProcesoNotificaciones" Category="" ClassName="cysnet.clinicaDental.notificaciones.bp.ProcesoNotificaciones" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="InSQLNotificaciones" Category="" ClassName="cysnet.clinicaDental.notificaciones.bs.InSQLNotificaciones" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
+    <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE Notificacion
+SET IndEnviada= 1 
+WHERE IdNotificacion = ?</Setting>
+    <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
+    <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
+    <Setting Target="Adapter" Name="KeyFieldName">IdNotificacion</Setting>
+    <Setting Target="Adapter" Name="Query">SELECT IdNotificacion, IdPaciente, Asunto, Mensaje
+FROM Notificacion
+WHERE IndEnviada = 0 
+ORDER BY IdNotificacion</Setting>
+  </Item>
+  <Item Name="EnviarEmail" Category="" ClassName="cysnet.clinicaDental.notificaciones.bo.EnviarEmail" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+    <Setting Target="Adapter" Name="Credentials">CuentaGmail</Setting>
+    <Setting Target="Adapter" Name="From">mcarvajal@cidenet.com.co</Setting>
+    <Setting Target="Adapter" Name="Recipient">m.carvajalt6@gmail.com</Setting>
     <Setting Target="Adapter" Name="SMTPPort">587</Setting>
     <Setting Target="Adapter" Name="SMTPServer">smtp.gmail.com</Setting>
     <Setting Target="Adapter" Name="SSLConfig">ISC.FeatureTracker.SSL.Config*</Setting>
