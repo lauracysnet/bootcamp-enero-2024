@@ -58,7 +58,7 @@ Method UltimaCitaDePacientePorEstado(pRequest As cysnet.clinicaDental.agenda.msg
       Set and = " AND CodEstado = "_pRequest.codEstado_" "
     }
     Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado from ClinicaDental.Cita where IdPaciente = 1 "_and_" order by FechaCita DESC limit 1"
+    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado from ClinicaDental.Cita where IdPaciente = ? "_and_" order by FechaCita DESC limit 1"
     Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
     If ($$$ISOK(sc)) {
       If (rs.Next(.sc)) {
