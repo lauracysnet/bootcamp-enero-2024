@@ -15,7 +15,7 @@ Method GenerarNotificacion(pRequest As cysnet.clinicaDental.notificaciones.msg.G
   Set pResponse.exito = 1
  
   Try {
-   set sql = "INSERT INTO Notificacion(idPaciente,asunto,mensaje,indEnviada) VALUES (?,?,?,0)"
+   set sql = "INSERT INTO ClinicaDental.Notificacion(idPaciente,asunto,mensaje,indEnviada) VALUES (?,?,?,0)"
     set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.idPaciente, pRequest.asunto, pRequest.mensaje)
 
     if ($$$ISOK(sc)) {
