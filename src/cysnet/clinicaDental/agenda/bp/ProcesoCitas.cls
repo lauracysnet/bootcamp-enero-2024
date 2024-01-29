@@ -97,8 +97,18 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </response>
 </call>
 </case>
+<case condition='request.%ClassName() = "ListarCitasRequest"' name='ListarCitas' >
+<call name='ListarCitas' target='CitasSQL' async='0' xpos='740' ypos='2500' >
+<request type='cysnet.clinicaDental.agenda.msg.ListarCitasRequest' >
+<assign property="callrequest" value="request" action="set" />
+</request>
+<response type='cysnet.clinicaDental.agenda.msg.ListarCitasResponse' >
+<assign property="response" value="callresponse" action="set" />
+</response>
+</call>
+</case>
 <case condition='request.%ClassName() = "CancelarCitaRequest"' name='CancelarCita' >
-<call name='CancelarCita' target='CitasSQL' async='0' xpos='740' ypos='2500' >
+<call name='CancelarCita' target='CitasSQL' async='0' xpos='1010' ypos='2500' >
 <request type='cysnet.clinicaDental.agenda.msg.CancelarCitaRequest' >
 <assign property="callrequest" value="request" action="set" />
 </request>
@@ -106,15 +116,13 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="response" value="callresponse" action="set" />
 </response>
 </call>
-</case>
-<case condition='request.%ClassName() = "ListarCitasRequest"' name='ListarCitas' >
-<call name='ListarCitas' target='CitasSQL' async='0' xpos='1010' ypos='2500' >
-<request type='cysnet.clinicaDental.agenda.msg.ListarCitasRequest' >
-<assign property="callrequest" value="request" action="set" />
+<call name='notificar cancelacion' target='NotificacionesSQL' async='1' xpos='1010' ypos='2600' >
+<request type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionRequest' >
+<assign property="callrequest.idPaciente" value="context.idPaciente" action="set" />
+<assign property="callrequest.asunto" value="&quot;cancelacion de cita:&quot;_context.idCita" action="set" />
+<assign property="callrequest.mensaje" value="&quot;mensaje para el paciente &quot;_context.idPaciente_&quot; se cancela la cita &quot;_context.idCita" action="set" />
 </request>
-<response type='cysnet.clinicaDental.agenda.msg.ListarCitasResponse' >
-<assign property="response" value="callresponse" action="set" />
-</response>
+<response type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionResponse' />
 </call>
 </case>
 <case condition='request.%ClassName() = "AltaPacienteRequest"' name='Alta Pacientes' >
@@ -166,7 +174,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <request type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionRequest' >
 <assign property="callrequest.idPaciente" value="context.idPaciente" action="set" />
 <assign property="callrequest.asunto" value="&quot;Cambio de cita:&quot;_context.idCita" action="set" />
-<assign property="callrequest.mensaje" value="&quot;mensaje para el paciente &quot;_context.paciente.nombre_&quot; su cita a hora es a las &quot;_request.fechaCita" action="set" />
+<assign property="callrequest.mensaje" value="&quot;mensaje para el paciente &quot;_context.idPaciente_&quot; la cita &quot;_context.idCita_&quot; se movio para la fecha:&quot;_request.fechaCita" action="set" />
 </request>
 <response type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionResponse' />
 </call>
