@@ -16,11 +16,11 @@ Method BuscarPacientePorEmail(pRequest As cysnet.clinicaDental.agenda.msg.Buscar
   Set pResponse.exito = 1
   
   Try {
-    set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    set sql = "SELECT idPaciente,nombre,apellidos,email,baja,permiteNotificaciones FROM Paciente WHERE email = ? "
+    Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+    Set sql = "SELECT idPaciente,nombre,apellidos,email,baja,permiteNotificaciones FROM ClinicaDental.Paciente WHERE email = ? "
 
-    set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email)
-    if ($$$ISOK(sc)) {
+    Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email)
+    If ($$$ISOK(sc)) {
       If (rs.%Next(.sc)) {
         Quit:$$$ISERR(sc)
         Set pResponse.ID = rs.Get("idPaciente")
@@ -56,17 +56,17 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
   Set pResponse.exito = 1
   
   Try {
-    set sql = "INSERT INTO Paciente (Nombre,Apellidos,Email,PermiteNotificaciones,Baja) VALUES (?,?,?,?,?)"
-    set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, 1, 0)
-    if ($$$ISOK(sc)) {
-      if (numRows = 0) {
+    Set sql = "INSERT INTO ClinicaDental.Paciente (Nombre,Apellidos,Email,PermiteNotificaciones,Baja) VALUES (?,?,?,?,?)"
+    Set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, 1, 0)
+    If ($$$ISOK(sc)) {
+      If (numRows = 0) {
         Set pResponse.exito = 0
         Set pResponse.error = "No se ha guardado el paciente"
-      }else{
+      }Else{
         Set pResponse.mensaje = "Se crea"
       }
     }
-  } catch (err) {
+  } Catch (err) {
     If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
         Set sc = err.status
     } Else {
@@ -74,7 +74,7 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
     }
   }
   
-  if ($$$ISERR(sc)) {
+  If ($$$ISERR(sc)) {
       Set pResponse.exito = 0
       Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
   }
@@ -85,18 +85,18 @@ Method NuevoPaciente(pRequest As cysnet.clinicaDental.agenda.msg.NuevoPacienteRe
 Method BajaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.BajaPacienteRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.BajaPacienteResponse) As %Status
 {
   #dim sc As %Status = $$$OK
-   #dim numRows As %Integer = 0
- Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.BajaPacienteResponse).%New()
+  #dim numRows As %Integer = 0
+  Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.BajaPacienteResponse).%New()
   Set pResponse.mensaje = "Se da de baja al ID:"_pRequest.ID
   Set pResponse.exito = 1
   Try{
-    set sql = "UPDATE Paciente SET baja = 1 where idPaciente = ?"
-    set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.ID)
-    if ($$$ISOK(sc)) {
-      if (numRows = 0) {
+    Set sql = "UPDATE ClinicaDental.Paciente SET baja = 1 where idPaciente = ?"
+    Set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.ID)
+    If ($$$ISOK(sc)) {
+      If (numRows = 0) {
         Set pResponse.exito = 0
         Set pResponse.error = "No se ha modificado el paciente"
-      }else{
+      }Else{
         Set pResponse.mensaje = "Se modifico"
       }
     }
@@ -104,7 +104,7 @@ Method BajaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.BajaPacienteRequ
     If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
       Set sc = err.status
     } Else {
-      Set sc = $System.Status.Error(err.Code, err.Name, err.Location, err.InnerException)
+      Set sc = $SYSTEM.Status.Error(err.Code, err.Name, err.Location, err.InnerException)
     }
   }
     Return $$$OK
@@ -118,40 +118,40 @@ Method ModificarPaciente(pRequest As cysnet.clinicaDental.agenda.msg.ModificarPa
   #dim numRows As %Integer = 0
   
   Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ModificarPacienteResponse).%New()
-  set pResponse.exito = 1
+  Set pResponse.exito = 1
 
   Try{
-    set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    set sql = "SELECT idPaciente FROM Paciente WHERE email = ?  and idPaciente <> ?"
-    set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email, pRequest.ID)
-    if ($$$ISOK(sc)) {
+    Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+    Set sql = "SELECT idPaciente FROM ClinicaDental.Paciente WHERE email = ?  and idPaciente <> ?"
+    Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.email, pRequest.ID)
+    If ($$$ISOK(sc)) {
       If (rs.%Next(.sc)) {
         Set pResponse.mensaje = "El email ya esta en uso"
       } Else {
-        set sql = "UPDATE Paciente  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
-        set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
+        Set sql = "UPDATE ClinicaDental.Paciente  SET Nombre = ?, Apellidos = ?, Email = ?, PermiteNotificaciones = ? where idPaciente = ?"
+        Set sc = ..Adapter.ExecuteUpdate(.numRows, sql, pRequest.nombre, pRequest.apellidos, pRequest.email, pRequest.permiteNotificaciones, pRequest.ID)
         
-        if ($$$ISOK(sc)) {
-           if (numRows = 0) {
+        If ($$$ISOK(sc)) {
+           If (numRows = 0) {
             Set pResponse.exito = 0
             Set pResponse.error = "No se ha modificado el paciente" 
-          }else{
+          }Else{
             Set pResponse.mensaje = "Se actualizo ID:"_pRequest.ID
           }
         } 
       }
     }
   }Catch(err){
-    if (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
-      set sc = err.status
-    } else {
-        set sc = $System.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
+    If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
+      Set sc = err.status
+    } Else {
+        Set sc = $SYSTEM.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
     }
   }
 
-  if ($$$ISERR(sc)) {
-      set pResponse.exito = 0
-      set pResponse.error = $System.Status.GetErrorText(sc)
+  If ($$$ISERR(sc)) {
+      Set pResponse.exito = 0
+      Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
   }
   Return $$$OK
 }
@@ -163,10 +163,10 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
     #dim rs As EnsLib.SQL.GatewayResultSet
 
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.ListarPacientesResponse).%New()
-    set pResponse.exito = 1
+    Set pResponse.exito = 1
     Try{
       Set pacientes = ##class(%ListOfObjects).%New()
-      set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+      Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
 
       If (pRequest.mostrarBajas = 1){
         Set where = ""
@@ -175,9 +175,9 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
         Set where = " WHERE  baja = 0"
       }
 
-      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Paciente "_where
-      set sc = ..Adapter.ExecuteQuery(.rs, sql)
-      if ($$$ISOK(sc)) {
+      Set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM ClinicaDental.Paciente "_where
+      Set sc = ..Adapter.ExecuteQuery(.rs, sql)
+      If ($$$ISOK(sc)) {
         While rs.%Next(.sc) {
             Set paciente = ##class(cysnet.clinicaDental.agenda.msg.struct.Paciente).%New()
            // Set paciente.idPaciente = rs.ID
@@ -186,7 +186,7 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
             Set paciente.email = rs.Get("email")
             Set paciente.baja = rs.Get("baja")
             Set paciente.permiteNotificaciones = rs.Get("permiteNotificaciones")
-            do pResponse.pacientes.Insert(paciente)
+            Do pResponse.pacientes.Insert(paciente)
             Kill paciente
         }
       }
@@ -194,13 +194,13 @@ Method ListarPacientes(pRequest As cysnet.clinicaDental.agenda.msg.ListarPacient
       If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
         Set sc = err.status
       } Else {
-        Set sc = $System.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
+        Set sc = $SYSTEM.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
       }
     }
     
-    if ($$$ISERR(sc)) {
-        set pResponse.exito = 0
-        set pResponse.error = $System.Status.GetErrorText(sc)
+    If ($$$ISERR(sc)) {
+        Set pResponse.exito = 0
+        Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
     }
     
 
@@ -216,9 +216,9 @@ Method BuscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
     Set pResponse = ##class(cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse).%New()
     Set pResponse.exito = 1
     Try{
-      set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-      set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM Paciente WHERE idPaciente = ?"
-      set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
+      Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
+      Set sql = "SELECT idPaciente, nombre, apellidos, email, baja, permiteNotificaciones FROM ClinicaDental.Paciente WHERE idPaciente = ?"
+      Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
       If ($$$ISOK(sc)) {
         If (rs.%Next(.sc)) {
             Quit:$$$ISERR(sc)
@@ -229,21 +229,21 @@ Method BuscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
             Set pResponse.baja = rs.Get("baja")
             Set pResponse.permiteNotificaciones = rs.Get("permiteNotificaciones")
         } Else {
-            set pResponse.exito = 0
+            Set pResponse.exito = 0
             Set pResponse.mensaje = "No existen datos para ese identificador ("_pRequest.idPaciente_")"
         }
       }
     }Catch(err){
       If (err.%ClassName(1)="common.err.exception") && ($$$ISERR(err.status)) {
-            set sc = err.status
-        } else {
-            set sc = $System.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
+            Set sc = err.status
+        } Else {
+            Set sc = $SYSTEM.Status.Error(err.Code,err.Name,err.Location,err.InnerException)
       }
     }
 
-    if ($$$ISERR(sc)) {
-        set pResponse.exito = 0
-        set pResponse.error = $System.Status.GetErrorText(sc)
+    If ($$$ISERR(sc)) {
+        Set pResponse.exito = 0
+        Set pResponse.error = $SYSTEM.Status.GetErrorText(sc)
     }
     Quit $$$OK
 }
