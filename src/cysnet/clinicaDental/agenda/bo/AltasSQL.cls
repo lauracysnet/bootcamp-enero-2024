@@ -43,7 +43,6 @@ Method AltaPaciente(pRequest As cysnet.clinicaDental.agenda.msg.AltaPacienteRequ
   Quit $$$OK
 }
 
-/// dar de alta  el paciente
 Method BuscarAltaPacientePorCita(pRequest As cysnet.clinicaDental.agenda.msg.BuscarAltaPacientePorCitaRequest, Output pResponse As cysnet.clinicaDental.agenda.msg.BuscarAltaPacientePorCitaResponse) As %Status
 {
   #dim sc As %Status = $$$OK
