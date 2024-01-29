@@ -14,7 +14,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <context>
 <property name='nombreClase' type='%String' instantiate='0' >
 <parameters>
-<parameter name='MAXLEN'  value='““' />
+<parameter name='MAXLEN'  value='250' />
 </parameters>
 </property>
 <property name='objReq' type='Ens.Request' instantiate='0' />
