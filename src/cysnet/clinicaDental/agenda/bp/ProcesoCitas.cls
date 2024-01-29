@@ -8,7 +8,6 @@ Storage Default
 }
 
 /// BPL Definition
-/// BPL Definition
 XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 {
 <process language='objectscript' request='Ens.Request' response='Ens.Response' height='3350' width='2150' >
@@ -24,6 +23,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <property name='obtenerPaciente' type='%Boolean' initialexpression='0' instantiate='0' />
 <property name='obtenerAdmision' type='%Boolean' initialexpression='0' instantiate='0' />
 <property name='idPaciente' type='%Integer' initialexpression='0' instantiate='0' />
+<property name='idCita' type='%Integer' instantiate='0' />
 <property name='cita' type='cysnet.clinicaDental.agenda.msg.TraerCitaResponse' instantiate='0' />
 <property name='paciente' type='cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse' instantiate='0' />
 <property name='alta' type='cysnet.clinicaDental.agenda.msg.BuscarAltaPacientePorCitaResponse' instantiate='0' />
@@ -55,7 +55,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <true>
 <call name='Obtener Cita' target='CitasSQL' async='0' xpos='470' ypos='1300' >
 <request type='cysnet.clinicaDental.agenda.msg.TraerCitaRequest' >
-<assign property="callrequest.idCita" value="request.idCita" action="set" />
+<assign property="callrequest.idCita" value="context.idCita" action="set" />
 </request>
 <response type='cysnet.clinicaDental.agenda.msg.TraerCitaResponse' >
 <assign property="context.cita" value="callresponse" action="set" />

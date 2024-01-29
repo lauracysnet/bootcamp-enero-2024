@@ -24,6 +24,8 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <return>1</return>
 </when>
 </rule>
+<assign property="idCita" value="objReq.idCita"></assign>
+<assign property="obtenerCita" value="1"></assign>
 </when>
 </rule>
 <rule name="Comprobar ModificarCita" disabled="false">
@@ -33,6 +35,8 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <return>1</return>
 </when>
 </rule>
+<assign property="idCita" value="objReq.idCita"></assign>
+<assign property="obtenerCita" value="1"></assign>
 </when>
 </rule>
 <rule name="Comprobar ListarCitas" disabled="false">
@@ -42,6 +46,8 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <return>1</return>
 </when>
 </rule>
+<assign property="idPaciente" value="objReq.idPaciente"></assign>
+<assign property="obtenerPaciente" value="1"></assign>
 </when>
 </rule>
 <rule name="Comprobar AltaPaciente" disabled="false">
@@ -51,6 +57,7 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <return>1</return>
 </when>
 </rule>
+<assign property="idCita" value="objReq.idCita"></assign>
 <assign property="obtenerAdmision" value="1"></assign>
 <assign property="obtenerCita" value="1"></assign>
 <assign property="obtenerPaciente" value="1"></assign>
@@ -63,6 +70,7 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <return>1</return>
 </when>
 </rule>
+<assign property="idCita" value="objReq.idCita"></assign>
 <assign property="obtenerAdmision" value="1"></assign>
 <assign property="obtenerCita" value="1"></assign>
 <assign property="obtenerPaciente" value="1"></assign>
