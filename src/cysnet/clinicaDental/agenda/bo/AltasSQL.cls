@@ -52,7 +52,7 @@ Method BuscarAltaPacientePorCita(pRequest As cysnet.clinicaDental.agenda.msg.Bus
   
   Try {
     set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    Set sql = "SELECT idAlta, idCita,fechaAlta FROM Alta WHERE idCita = ?"
+    Set sql = "SELECT idAlta, idCita,fechaAlta FROM ClinicaDental.Alta WHERE idCita = ?"
     
     set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idCita)
     

@@ -88,7 +88,7 @@ Method BuscarAdmisionPorCita(pRequest As cysnet.clinicaDental.agenda.msg.BuscarA
   
   Try {
     set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    Set sql = "SELECT idAdmision, idCita,fechaAdmision FROM Admision WHERE idCita = ?"
+    Set sql = "SELECT idAdmision, idCita,fechaAdmision FROM ClinicaDental.Admision WHERE idCita = ?"
     
     set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idCita)
     
