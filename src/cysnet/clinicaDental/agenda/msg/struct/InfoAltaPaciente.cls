@@ -1,15 +1,9 @@
 Class cysnet.clinicaDental.agenda.msg.struct.InfoAltaPaciente Extends (%SerialObject, %XML.Adaptor)
 {
 
-Property idPaciente As %Integer;
+Property paciente As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse;
 
-Property nombre As %String;
-
-Property apellido As %String;
-
-Property idAdmision As %Integer;
-
-Property fechaAdmision As %TimeStamp;
+Property admision As cysnet.clinicaDental.agenda.msg.BuscarAdmisionPorCitaResponse;
 
 Property fechaAlta As %TimeStamp;
 
@@ -45,6 +39,12 @@ Storage Default
 </Value>
 <Value name="10">
 <Value>fechaAlta</Value>
+</Value>
+<Value name="11">
+<Value>paciente</Value>
+</Value>
+<Value name="12">
+<Value>admision</Value>
 </Value>
 </Data>
 <State>InfoAltaPacienteState</State>

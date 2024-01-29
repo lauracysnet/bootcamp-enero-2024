@@ -1,15 +1,9 @@
 Class cysnet.clinicaDental.agenda.msg.struct.InfoAdmision Extends (%SerialObject, %XML.Adaptor)
 {
 
-Property idAdmision As %Integer;
+Property paciente As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse;
 
-Property fechaAdmision As %TimeStamp;
-
-Property idPaciente As %Boolean;
-
-Property nombre As %String;
-
-Property apellidos As %String;
+Property admision As cysnet.clinicaDental.agenda.msg.BuscarAdmisionPorCitaResponse;
 
 Storage Default
 {
@@ -40,6 +34,12 @@ Storage Default
 </Value>
 <Value name="9">
 <Value>apellidos</Value>
+</Value>
+<Value name="10">
+<Value>paciente</Value>
+</Value>
+<Value name="11">
+<Value>admision</Value>
 </Value>
 </Data>
 <State>AdmisionState</State>
