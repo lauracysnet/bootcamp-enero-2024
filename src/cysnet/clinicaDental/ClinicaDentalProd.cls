@@ -65,14 +65,14 @@ XData ProductionDefinition
   <Item Name="InSQLNotificaciones" Category="" ClassName="cysnet.clinicaDental.notificaciones.bs.InSQLNotificaciones" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
-    <Setting Target="Adapter" Name="DeleteQuery">UPDATE ClinicaDental.Notificacion
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE Notificacion
 SET IndEnviada= 1 
 WHERE IdNotificacion = ?</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
     <Setting Target="Adapter" Name="KeyFieldName">IdNotificacion</Setting>
     <Setting Target="Adapter" Name="Query">SELECT IdNotificacion, IdPaciente, Asunto, Mensaje
-FROM ClinicaDental.Notificacion
+FROM Notificacion
 WHERE IndEnviada = 0 
 ORDER BY IdNotificacion</Setting>
   </Item>
@@ -88,7 +88,7 @@ ORDER BY IdNotificacion</Setting>
   <Item Name="InSQLAltas" Category="" ClassName="cysnet.clinicaDental.agenda.bs.InSQLAltas" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
-    <Setting Target="Adapter" Name="DeleteQuery">UPDATE ClinicaDental.Alta 
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE Alta 
 SET IndEnviada = 1 
 WHERE IdAlta= ?</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
@@ -100,6 +100,20 @@ WHERE IndEnviada = 0
 ORDER BY IdAlta</Setting>
   </Item>
   <Item Name="ProcesoCitas" Category="" ClassName="cysnet.clinicaDental.agenda.bp.ProcesoCitas" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="InSQLAdmisiones" Category="" ClassName="cysnet.clinicaDental.agenda.bs.InSQLAdmisiones" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
+    <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE ClinicaDental.Admision
+SET IndEnviada= 1 
+WHERE IdAdmision= ?</Setting>
+    <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
+    <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
+    <Setting Target="Adapter" Name="KeyFieldName">IdAdmision</Setting>
+    <Setting Target="Adapter" Name="Query">SELECT IdAdmision, IdCita, FechaAdmision
+FROM ClinicaDental.Admision
+WHERE IndEnviada = 0 
+ORDER BY IdAdmision</Setting>
   </Item>
 </Production>
 }
