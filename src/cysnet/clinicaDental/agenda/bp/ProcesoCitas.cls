@@ -80,7 +80,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </true>
 </if>
 <switch name='selecionar mensaje' xpos='335' ypos='2250' xend='335' yend='2900' >
-<case condition='request.%ClassName() = "AltaCitasResponse"' name='AltaCitas' >
+<case condition='request.%ClassName() = "AltaCitasRequest"' name='AltaCitas' >
 <call name='AltaCitas' target='CitasSQL' async='0' xpos='470' ypos='2400' >
 <request type='cysnet.clinicaDental.agenda.msg.AltaCitasRequest' >
 <assign property="callrequest" value="request" action="set" />
@@ -90,7 +90,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </response>
 </call>
 </case>
-<case condition='request.%ClassName() = "CancelarCitaResponse"' name='CancelarCita' >
+<case condition='request.%ClassName() = "CancelarCitaRequest"' name='CancelarCita' >
 <call name='CancelarCita' target='CitasSQL' async='0' xpos='740' ypos='2400' >
 <request type='cysnet.clinicaDental.agenda.msg.CancelarCitaRequest' >
 <assign property="callrequest" value="request" action="set" />
@@ -100,7 +100,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </response>
 </call>
 </case>
-<case condition='request.%ClassName() = "ModificarCitaResponse"' name='ModificarCita' >
+<case condition='request.%ClassName() = "ModificarCitaRequest"' name='ModificarCita' >
 <call name='ModificarCita' target='CitasSQL' async='0' xpos='1010' ypos='2400' >
 <request type='cysnet.clinicaDental.agenda.msg.ModificarCitaRequest' >
 <assign property="callrequest" value="request" action="set" />
@@ -110,7 +110,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </response>
 </call>
 </case>
-<case condition='request.%ClassName() = "ListarCitasResponse"' name='ListarCitas' >
+<case condition='request.%ClassName() = "ListarCitasRequest"' name='ListarCitas' >
 <call name='ListarCitas' target='CitasSQL' async='0' xpos='1280' ypos='2400' >
 <request type='cysnet.clinicaDental.agenda.msg.ListarCitasRequest' >
 <assign property="callrequest" value="request" action="set" />
