@@ -56,6 +56,18 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <assign property="obtenerPaciente" value="1"></assign>
 </when>
 </rule>
+<rule name="Comprobar AdmitirPaciente" disabled="false">
+<when condition="nombreClase=&quot;AdmitirPacienteRequest&quot;" comment="">
+<rule name="validarDatos" disabled="false">
+<when condition="objReq.idCita !=&quot;&quot;" comment="">
+<return>1</return>
+</when>
+</rule>
+<assign property="obtenerAdmision" value="1"></assign>
+<assign property="obtenerCita" value="1"></assign>
+<assign property="obtenerPaciente" value="1"></assign>
+</when>
+</rule>
 </ruleSet>
 </ruleDefinition>
 }
