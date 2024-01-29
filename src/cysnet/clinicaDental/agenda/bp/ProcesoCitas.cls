@@ -33,7 +33,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <property name='infoModifcarCita' type='cysnet.clinicaDental.agenda.msg.struct.InfoModificarCita' instantiate='0' />
 <property name='InfoAdmision' type='cysnet.clinicaDental.agenda.msg.struct.InfoAdmision' instantiate='0' />
 </context>
-<sequence xend='200' yend='3100' >
+<sequence xend='200' yend='3200' >
 <assign name="Asinar Request" property="context.objReq" value="request" action="set" xpos='200' ypos='250' />
 <assign name="Asinar nombre de la clase" property="context.nombreClase" value="request.%ClassName()" action="set" xpos='200' ypos='350' />
 <rule name='Validar Datos' rule='cysnet.clinicaDental.agenda.rules.CheckDatosProcesosCitas'  resultLocation='context.resultadoRegla' ruleContext='context' xpos='200' ypos='450' >
@@ -44,7 +44,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
  $$$LOGINFO("obtenerAdmision:"_context.obtenerAdmision)
    ]]>
 </code>
-<if name='Datos Correctos' condition='context.resultadoRegla = 1' xpos='200' ypos='650' xend='200' yend='3000' >
+<if name='Datos Correctos' condition='context.resultadoRegla = 1' xpos='200' ypos='650' xend='200' yend='3100' >
 <true>
 <if name='obtener Admision' condition='context.obtenerAdmision = 1' xpos='335' ypos='800' xend='335' yend='1050' >
 <true>
@@ -58,7 +58,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </true>
 </if>
-<if name='obtenerCita' condition='context.obtenerCita = 1' xpos='335' ypos='1150' xend='335' yend='1400' >
+<if name='obtenerCita' condition='context.obtenerCita = 1' xpos='335' ypos='1150' xend='335' yend='1500' >
 <true>
 <call name='Obtener Cita' target='CitasSQL' async='0' xpos='470' ypos='1300' >
 <request type='cysnet.clinicaDental.agenda.msg.TraerCitaRequest' >
@@ -68,11 +68,12 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="context.cita" value="callresponse" action="set" />
 </response>
 </call>
+<assign name="Asignar idPaciente" property="context.idPaciente" value="context.cita.idPaciente" action="set" xpos='470' ypos='1400' />
 </true>
 </if>
-<if name='obtenerPaciente ' condition='context.obtenerPaciente = 1' xpos='335' ypos='1500' xend='335' yend='1750' >
+<if name='obtenerPaciente ' condition='context.obtenerPaciente = 1' xpos='335' ypos='1600' xend='335' yend='1850' >
 <true>
-<call name='Obtener Paciente' target='PacientesSQL' async='0' xpos='470' ypos='1650' >
+<call name='Obtener Paciente' target='PacientesSQL' async='0' xpos='470' ypos='1750' >
 <request type='cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest' >
 <assign property="callrequest.idPaciente" value="context.idPaciente" action="set" />
 </request>
@@ -82,9 +83,9 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </true>
 </if>
-<switch name='selecionar mensaje' xpos='335' ypos='1850' xend='335' yend='2900' >
+<switch name='selecionar mensaje' xpos='335' ypos='1950' xend='335' yend='3000' >
 <case condition='request.%ClassName() = "AltaCitasRequest"' name='AltaCitas' >
-<call name='AltaCitas' target='CitasSQL' async='0' xpos='470' ypos='2000' >
+<call name='AltaCitas' target='CitasSQL' async='0' xpos='470' ypos='2100' >
 <request type='cysnet.clinicaDental.agenda.msg.AltaCitasRequest' >
 <assign property="callrequest" value="request" action="set" />
 </request>
@@ -94,7 +95,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </case>
 <case condition='request.%ClassName() = "ListarCitasRequest"' name='ListarCitas' >
-<call name='ListarCitas' target='CitasSQL' async='0' xpos='740' ypos='2000' >
+<call name='ListarCitas' target='CitasSQL' async='0' xpos='740' ypos='2100' >
 <request type='cysnet.clinicaDental.agenda.msg.ListarCitasRequest' >
 <assign property="callrequest" value="request" action="set" />
 </request>
@@ -104,7 +105,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </case>
 <case condition='request.%ClassName() = "CancelarCitaRequest"' name='CancelarCita' >
-<call name='CancelarCita' target='CitasSQL' async='0' xpos='1010' ypos='2000' >
+<call name='CancelarCita' target='CitasSQL' async='0' xpos='1010' ypos='2100' >
 <request type='cysnet.clinicaDental.agenda.msg.CancelarCitaRequest' >
 <assign property="callrequest" value="request" action="set" />
 </request>
@@ -112,7 +113,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="response" value="callresponse" action="set" />
 </response>
 </call>
-<call name='notificar cancelacion' target='NotificacionesSQL' async='1' xpos='1010' ypos='2100' >
+<call name='notificar cancelacion' target='NotificacionesSQL' async='1' xpos='1010' ypos='2200' >
 <request type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionRequest' >
 <assign property="callrequest.idPaciente" value="context.idPaciente" action="set" />
 <assign property="callrequest.asunto" value="&quot;cancelacion de cita:&quot;_context.idCita" action="set" />
@@ -122,10 +123,10 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </case>
 <case condition='request.%ClassName() = "AdmitirPacienteRequest"' >
-<assign name="asignar paciente" property="context.InfoAdmision.paciente" value="context.paciente" action="set" xpos='1280' ypos='2000' />
-<assign name="asignar admision" property="context.InfoAdmision.admision" value="context.admision" action="set" xpos='1280' ypos='2100' />
-<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAdmisionToADTA01' source='context.InfoAdmision' target='context.mensajeHL7' xpos='1280' ypos='2200' />
-<call name='Enviar ADTA01' target='OutFileHL7' async='0' xpos='1280' ypos='2300' >
+<assign name="asignar paciente" property="context.InfoAdmision.paciente" value="context.paciente" action="set" xpos='1280' ypos='2100' />
+<assign name="asignar admision" property="context.InfoAdmision.admision" value="context.admision" action="set" xpos='1280' ypos='2200' />
+<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAdmisionToADTA01' source='context.InfoAdmision' target='context.mensajeHL7' xpos='1280' ypos='2300' />
+<call name='Enviar ADTA01' target='OutFileHL7' async='0' xpos='1280' ypos='2400' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.mensajeHL7" action="set" />
 </request>
@@ -133,7 +134,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </case>
 <case condition='request.%ClassName() = "AltaPacienteRequest"' name='Alta Pacientes' >
-<call name='Obtener Alta' target='AltasSQL' async='0' xpos='1550' ypos='2000' >
+<call name='Obtener Alta' target='AltasSQL' async='0' xpos='1550' ypos='2100' >
 <request type='cysnet.clinicaDental.agenda.msg.BuscarAltaPacientePorCitaRequest' >
 <assign property="callrequest.idCita" value="request.idCita" action="set" />
 </request>
@@ -141,11 +142,11 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="context.alta" value="callresponse" action="set" />
 </response>
 </call>
-<assign name="Asignar admision" property="context.infoAltaP.admision" value="context.admision" action="set" xpos='1550' ypos='2100' />
-<assign name="asignar paciente" property="context.infoAltaP.paciente" value="context.paciente" action="set" xpos='1550' ypos='2200' />
-<assign name="Asignar fechaAlta" property="context.infoAltaP.fechaAlta" value="context.alta.fechaAlta" action="set" xpos='1550' ypos='2300' />
-<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAltaPacienteToADTA03' source='context.infoAltaP' target='context.mensajeHL7' xpos='1550' ypos='2400' />
-<call name='Enviar ADTA03' target='OutFileHL7' async='0' xpos='1550' ypos='2500' >
+<assign name="Asignar admision" property="context.infoAltaP.admision" value="context.admision" action="set" xpos='1550' ypos='2200' />
+<assign name="asignar paciente" property="context.infoAltaP.paciente" value="context.paciente" action="set" xpos='1550' ypos='2300' />
+<assign name="Asignar fechaAlta" property="context.infoAltaP.fechaAlta" value="context.alta.fechaAlta" action="set" xpos='1550' ypos='2400' />
+<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAltaPacienteToADTA03' source='context.infoAltaP' target='context.mensajeHL7' xpos='1550' ypos='2500' />
+<call name='Enviar ADTA03' target='OutFileHL7' async='0' xpos='1550' ypos='2600' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.mensajeHL7" action="set" />
 </request>
@@ -153,16 +154,16 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </call>
 </case>
 <case condition='request.%ClassName() = "ModificarCitaRequest"' >
-<assign name="asignar cita" property="context.infoModifcarCita.cita" value="context.cita" action="set" xpos='1820' ypos='2000' />
-<assign name="asignar paciente" property="context.infoModifcarCita.paciente" value="context.paciente" action="set" xpos='1820' ypos='2100' />
-<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoModificarCitaToSIUS15' source='context.infoModifcarCita' target='context.mensajeHL7' xpos='1820' ypos='2200' />
-<call name='Enviar SIUS15' target='OutFileHL7' async='0' xpos='1820' ypos='2300' >
+<assign name="asignar cita" property="context.infoModifcarCita.cita" value="context.cita" action="set" xpos='1820' ypos='2100' />
+<assign name="asignar paciente" property="context.infoModifcarCita.paciente" value="context.paciente" action="set" xpos='1820' ypos='2200' />
+<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoModificarCitaToSIUS15' source='context.infoModifcarCita' target='context.mensajeHL7' xpos='1820' ypos='2300' />
+<call name='Enviar SIUS15' target='OutFileHL7' async='0' xpos='1820' ypos='2400' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.mensajeHL7" action="set" />
 </request>
 <response type='EnsLib.HL7.Message' />
 </call>
-<call name='ModificarCita' target='CitasSQL' async='0' xpos='1820' ypos='2400' >
+<call name='ModificarCita' target='CitasSQL' async='0' xpos='1820' ypos='2500' >
 <request type='cysnet.clinicaDental.agenda.msg.ModificarCitaRequest' >
 <assign property="callrequest" value="request" action="set" />
 </request>
@@ -170,15 +171,15 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="response" value="callresponse" action="set" />
 </response>
 </call>
-<assign name="asignar fecha cita nueva" property="context.infoModifcarCita.cita.fechaCita" value="request.fechaCita" action="set" xpos='1820' ypos='2500' />
-<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoModificarCitaToSIUS12' source='context.infoModifcarCita' target='context.mensajeHL7' xpos='1820' ypos='2600' />
-<call name='Enviar SIUS12' target='OutFileHL7' async='0' xpos='1820' ypos='2700' >
+<assign name="asignar fecha cita nueva" property="context.infoModifcarCita.cita.fechaCita" value="request.fechaCita" action="set" xpos='1820' ypos='2600' />
+<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoModificarCitaToSIUS12' source='context.infoModifcarCita' target='context.mensajeHL7' xpos='1820' ypos='2700' />
+<call name='Enviar SIUS12' target='OutFileHL7' async='0' xpos='1820' ypos='2800' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.mensajeHL7" action="set" />
 </request>
 <response type='EnsLib.HL7.Message' />
 </call>
-<call name='notificar cambio fecha' target='NotificacionesSQL' async='1' xpos='1820' ypos='2800' >
+<call name='notificar cambio fecha' target='NotificacionesSQL' async='1' xpos='1820' ypos='2900' >
 <request type='cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionRequest' >
 <assign property="callrequest.idPaciente" value="context.idPaciente" action="set" />
 <assign property="callrequest.asunto" value="&quot;Cambio de cita:&quot;_context.idCita" action="set" />

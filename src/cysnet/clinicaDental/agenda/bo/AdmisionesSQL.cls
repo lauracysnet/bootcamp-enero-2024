@@ -96,7 +96,7 @@ Method BuscarAdmisionPorCita(pRequest As cysnet.clinicaDental.agenda.msg.BuscarA
       If (rs.Next(.sc)) {
           Quit:$$$ISERR(sc)
           Set pResponse.idAdmision = rs.Get("idAdmision")
-          Set pResponse.IdCita = rs.Get("idCita")
+          Set pResponse.idCita = rs.Get("idCita")
           Set pResponse.fechaAdmision = rs.Get("fechaAdmision")
       }else{
       }
