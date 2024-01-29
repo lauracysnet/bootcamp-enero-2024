@@ -229,6 +229,7 @@ Method BuscarPacientePorID(pRequest As cysnet.clinicaDental.agenda.msg.BuscarPac
             Set pResponse.baja = rs.Get("baja")
             Set pResponse.permiteNotificaciones = rs.Get("permiteNotificaciones")
         } Else {
+            set pResponse.exito = 0
             Set pResponse.mensaje = "No existen datos para ese identificador ("_pRequest.idPaciente_")"
         }
       }
