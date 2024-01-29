@@ -65,14 +65,14 @@ XData ProductionDefinition
   <Item Name="InSQLNotificaciones" Category="" ClassName="cysnet.clinicaDental.notificaciones.bs.InSQLNotificaciones" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
-    <Setting Target="Adapter" Name="DeleteQuery">UPDATE Notificacion
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE ClinicaDental.Notificacion
 SET IndEnviada= 1 
 WHERE IdNotificacion = ?</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
     <Setting Target="Adapter" Name="KeyFieldName">IdNotificacion</Setting>
     <Setting Target="Adapter" Name="Query">SELECT IdNotificacion, IdPaciente, Asunto, Mensaje
-FROM Notificacion
+FROM ClinicaDental.Notificacion
 WHERE IndEnviada = 0 
 ORDER BY IdNotificacion</Setting>
   </Item>
@@ -88,14 +88,14 @@ ORDER BY IdNotificacion</Setting>
   <Item Name="InSQLAltas" Category="" ClassName="cysnet.clinicaDental.agenda.bs.InSQLAltas" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Adapter" Name="Credentials">MySQL</Setting>
     <Setting Target="Adapter" Name="DSN">jdbc:mysql://mysql:3306/iris?useSSL=false</Setting>
-    <Setting Target="Adapter" Name="DeleteQuery">UPDATE Alta 
+    <Setting Target="Adapter" Name="DeleteQuery">UPDATE ClinicaDental.Alta 
 SET IndEnviada = 1 
 WHERE IdAlta= ?</Setting>
     <Setting Target="Adapter" Name="JDBCDriver">com.mysql.jdbc.Driver</Setting>
     <Setting Target="Adapter" Name="JGService">JavaGateway</Setting>
     <Setting Target="Adapter" Name="KeyFieldName">IdAlta</Setting>
     <Setting Target="Adapter" Name="Query">SELECT IdAlta, IdCita, FechaAlta
-FROM Alta 
+FROM ClinicaDental.Alta 
 WHERE IndEnviada = 0 
 ORDER BY IdAlta</Setting>
   </Item>

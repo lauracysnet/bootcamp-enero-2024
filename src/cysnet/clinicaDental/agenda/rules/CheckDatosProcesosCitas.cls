@@ -30,7 +30,7 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 </rule>
 <rule name="Comprobar ModificarCita" disabled="false">
 <when condition="nombreClase=&quot;ModificarCitaRequest&quot;" comment="">
-<assign property="idCita" value="objReq.idCita"></assign>
+<assign property="idCita" value="objReq.ID"></assign>
 <assign property="obtenerCita" value="1"></assign>
 <rule name="validarDatos" disabled="false">
 <when condition="objReq.ID!=&quot;&quot;" comment="">
