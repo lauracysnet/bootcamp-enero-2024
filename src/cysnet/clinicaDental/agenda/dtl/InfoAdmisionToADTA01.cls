@@ -21,13 +21,13 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='"A01"' property='target.{EVN:EventTypeCode}' action='set' />
 <assign value='..CurrentDateTime()' property='target.{EVN:RecordedDateTime}' action='set' />
 <assign value='1' property='target.{PID:SetIDPID}' action='set' />
-<assign value='source.idPaciente' property='target.{PID:PatientIdentifierList(1).IDNumber}' action='set' />
 <assign value='"ID"' property='target.{PID:PatientIdentifierList(1).IdentifierTypeCode}' action='set' />
-<assign value='source.apellidos' property='target.{PID:PatientName(1).FamilyName}' action='set' />
-<assign value='source.nombre' property='target.{PID:PatientName(1).GivenName}' action='set' />
+<assign value='source.paciente.idPaciente' property='target.{PID:PatientIdentifierList(1).IDNumber}' action='set' />
 <assign value='1' property='target.{PV1:SetIDPV1}' action='set' />
-<assign value='source.idAdmision' property='target.{PV1:VisitNumber}' action='set' />
-<assign value='source.fechaAdmision' property='target.{PV1:AdmitDateTime}' action='set' />
+<assign value='source.paciente.apellidos' property='target.{PID:PatientName().FamilyName}' action='set' />
+<assign value='source.paciente.nombre' property='target.{PID:PatientName(1).FamilyName}' action='set' />
+<assign value='source.admision.idAdmision' property='target.{PV1:VisitNumber}' action='set' />
+<assign value='source.admision.fechaAdmision' property='target.{PV1:AdmitDateTime}' action='set' />
 </transform>
 }
 
