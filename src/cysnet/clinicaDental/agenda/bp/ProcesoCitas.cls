@@ -163,13 +163,13 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </request>
 <response type='cysnet.clinicaDental.agenda.msg.BuscarAltaPacientePorCitaResponse' >
 <assign property="context.alta" value="callresponse" action="set" />
+<assign property="context.infoAltaP.fechaAlta" value="callresponse.fechaAlta" action="set" />
 </response>
 </call>
 <assign name="Asignar admision" property="context.infoAltaP.admision" value="context.admision" action="set" xpos='1550' ypos='2200' />
 <assign name="asignar paciente" property="context.infoAltaP.paciente" value="context.paciente" action="set" xpos='1550' ypos='2300' />
-<assign name="Asignar fechaAlta" property="context.infoAltaP.fechaAlta" value="context.alta.fechaAlta" action="set" xpos='1550' ypos='2400' />
-<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAltaPacienteToADTA03' source='context.infoAltaP' target='context.mensajeHL7' xpos='1550' ypos='2500' />
-<call name='Enviar ADTA03' target='OutFileHL7' async='0' xpos='1550' ypos='2600' >
+<transform name='Transformar' class='cysnet.clinicaDental.agenda.dtl.InfoAltaPacienteToADTA03' source='context.infoAltaP' target='context.mensajeHL7' xpos='1550' ypos='2400' />
+<call name='Enviar ADTA03' target='OutFileHL7' async='0' xpos='1550' ypos='2500' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.mensajeHL7" action="set" />
 </request>

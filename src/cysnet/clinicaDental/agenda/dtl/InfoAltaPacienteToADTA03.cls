@@ -28,7 +28,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='1' property='target.{PV1:SetIDPV1}' action='set' />
 <assign value='source.admision.idAdmision' property='target.{PV1:VisitNumber}' action='set' />
 <assign value='source.admision.fechaAdmision' property='target.{PV1:AdmitDateTime}' action='set' />
-<assign value='source.fechaAlta' property='target.{PV1:DischargeDateTime()}' action='set' />
+<assign value='source.fechaAlta' property='target.{PV1:DischargeDateTime(1)}' action='set' />
 <assign value='"ID"' property='target.{PID:PatientIdentifierList(1).IdentifierTypeCode}' action='set' />
 </transform>
 }
