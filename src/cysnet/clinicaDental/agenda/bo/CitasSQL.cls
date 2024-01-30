@@ -58,16 +58,16 @@ Method UltimaCitaDePacientePorEstado(pRequest As cysnet.clinicaDental.agenda.msg
       Set and = " AND CodEstado = "_pRequest.codEstado_" "
     }
     Set rs = ##class(EnsLib.SQL.GatewayResultSet).%New()
-    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado from ClinicaDental.Cita where IdPaciente = ? "_and_" order by FechaCita DESC limit 1"
+    Set sql = "SELECT IdCita ,IdPaciente ,DescCita ,FechaCita ,CodEstado from ClinicaDental.Cita where IdPaciente = ? "_and_" order by IdCita DESC limit 1"
     Set sc = ..Adapter.ExecuteQuery(.rs, sql, pRequest.idPaciente)
     If ($$$ISOK(sc)) {
       If (rs.Next(.sc)) {
           Quit:$$$ISERR(sc)
-          Set pResponse.IdCita = rs.Get("IdCita")
-          Set pResponse.IdPaciente = rs.Get("IdPaciente")
-          Set pResponse.DescCita = rs.Get("DescCita")
-          Set pResponse.FechaCita = rs.Get("FechaCita")
-          Set pResponse.CodEstado = rs.Get("CodEstado")
+          Set pResponse.idCita = rs.Get("IdCita")
+          Set pResponse.idPaciente = rs.Get("IdPaciente")
+          Set pResponse.descCita = rs.Get("DescCita")
+          Set pResponse.fechaCita = rs.Get("FechaCita")
+          Set pResponse.codEstado = rs.Get("CodEstado")
       }Else {
         Set pResponse.mensaje = "no se encontro cita para enste paciente"
       }
