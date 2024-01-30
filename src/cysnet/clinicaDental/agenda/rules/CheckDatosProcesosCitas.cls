@@ -10,6 +10,8 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <ruleSet name="" effectiveBegin="" effectiveEnd="">
 <rule name="Comprobar AltasCitas" disabled="false">
 <when condition="nombreClase=&quot;AltaCitasRequest&quot;" comment="">
+<assign property="idPaciente" value="objReq.idPaciente"></assign>
+<assign property="obtenerPaciente" value="1"></assign>
 <rule name="validarDatos" disabled="false">
 <when condition="objReq.idPaciente!=&quot;&quot;" comment="">
 <return>1</return>
@@ -32,6 +34,7 @@ XData RuleDefinition [ XMLNamespace = "http://www.intersystems.com/rule" ]
 <when condition="nombreClase=&quot;ModificarCitaRequest&quot;" comment="">
 <assign property="idCita" value="objReq.ID"></assign>
 <assign property="obtenerCita" value="1"></assign>
+<assign property="obtenerPaciente" value="1"></assign>
 <rule name="validarDatos" disabled="false">
 <when condition="objReq.ID!=&quot;&quot;" comment="">
 <return>1</return>
