@@ -14,21 +14,21 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='"IRIS"' property='target.{MSH:SendingFacility}' action='set' />
 <assign value='"CLINICADENTAL"' property='target.{MSH:DateTimeOfMessage.Time}' action='set' />
 <assign value='"CLINICADENTAL"' property='target.{MSH:ReceivingApplication}' action='set' />
-<assign value='..CurrentDateTime()' property='target.{MSH:DateTimeOfMessage}' action='set' />
+<assign value='$Replace($Replace($Replace(..CurrentDateTime()," ",""),":",""),"-","")' property='target.{MSH:DateTimeOfMessage}' action='set' />
 <assign value='"ADT"' property='target.{MSH:MessageType.MessageCode}' action='set' />
 <assign value='"A03"' property='target.{MSH:MessageType.TriggerEvent}' action='set' />
 <assign value='"P"' property='target.{MSH:ProcessingID.ProcessingID}' action='set' />
 <assign value='"2.5"' property='target.{MSH:VersionID.VersionID}' action='set' />
 <assign value='"A03"' property='target.{EVN:EventTypeCode}' action='set' />
-<assign value='..CurrentDateTime()' property='target.{EVN:RecordedDateTime}' action='set' />
+<assign value='$Replace($Replace($Replace(..CurrentDateTime()," ",""),":",""),"-","")' property='target.{EVN:RecordedDateTime}' action='set' />
 <assign value='1' property='target.{PID:SetIDPID}' action='set' />
 <assign value='source.paciente.nombre' property='target.{PID:PatientName(1).FamilyName}' action='set' />
 <assign value='source.paciente.apellidos' property='target.{PID:PatientName(1).GivenName}' action='set' />
 <assign value='source.paciente.idPaciente' property='target.{PID:PatientIdentifierList(1).IDNumber}' action='set' />
 <assign value='1' property='target.{PV1:SetIDPV1}' action='set' />
 <assign value='source.admision.idAdmision' property='target.{PV1:VisitNumber}' action='set' />
-<assign value='source.admision.fechaAdmision' property='target.{PV1:AdmitDateTime}' action='set' />
-<assign value='source.fechaAlta' property='target.{PV1:DischargeDateTime(1)}' action='set' />
+<assign value='$Replace($Replace($Replace(source.admision.fechaAdmision," ",""),":",""),"-","")' property='target.{PV1:AdmitDateTime}' action='set' />
+<assign value='$Replace($Replace($Replace(source.fechaAlta," ",""),":",""),"-","")' property='target.{PV1:DischargeDateTime(1)}' action='set' />
 <assign value='"ID"' property='target.{PID:PatientIdentifierList(1).IdentifierTypeCode}' action='set' />
 </transform>
 }
