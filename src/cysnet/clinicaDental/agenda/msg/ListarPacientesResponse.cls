@@ -1,7 +1,7 @@
-Class cysnet.clinicaDental.agenda.msg.NuevoPacienteResponse Extends Ens.Response
+Class cysnet.clinicaDental.agenda.msg.ListarPacientesResponse Extends Ens.Response
 {
 
-Property idPaciente As %Integer;
+Property pacientes As list Of cysnet.clinicaDental.agenda.msg.struct.Paciente;
 
 Property mensaje As %String(MAXLEN = "");
 
@@ -11,10 +11,10 @@ Property error As %String(MAXLEN = "");
 
 Storage Default
 {
-<Data name="NuevoPacienteResponseDefaultData">
-<Subscript>"NuevoPacienteResponse"</Subscript>
+<Data name="ListarPacientesResponseDefaultData">
+<Subscript>"ListarPacientesResponse"</Subscript>
 <Value name="1">
-<Value>idPaciente</Value>
+<Value>pacientes</Value>
 </Value>
 <Value name="2">
 <Value>mensaje</Value>
@@ -26,7 +26,7 @@ Storage Default
 <Value>error</Value>
 </Value>
 </Data>
-<DefaultData>NuevoPacienteResponseDefaultData</DefaultData>
+<DefaultData>ListarPacientesResponseDefaultData</DefaultData>
 <Type>%Storage.Persistent</Type>
 }
 

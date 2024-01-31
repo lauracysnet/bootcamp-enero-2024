@@ -21,7 +21,7 @@ Method NuevoPaciente(nombre As %String, apellidos As %String, email As %String) 
 	Set req.email = email
 	Set req.nombre = nombre
 	
-	Do ..SendRequestSync("PacientesSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoPacientes", req, .rsp)
 	
 	Quit rsp
 }
@@ -35,7 +35,7 @@ Method BajaPaciente(ID As %Integer) As cysnet.clinicaDental.agenda.msg.BajaPacie
 	Set req = ##class(cysnet.clinicaDental.agenda.msg.BajaPacienteRequest).%New()
 	Set req.ID = ID
 	
-	Do ..SendRequestSync("PacientesSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoPacientes", req, .rsp)
 	
 	Quit rsp
 }
@@ -53,13 +53,27 @@ Method ModificarPaciente(ID As %Integer, nombre As %String, apellidos As %String
 	Set req.nombre = nombre
 	Set req.permiteNotificaciones = permiteNotificaciones
 	
-	Do ..SendRequestSync("PacientesSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoPacientes", req, .rsp)
 	
 	Quit rsp
 }
 
+/// Método para listar todos los pacientes
+Method ListarPacientes(mostrarBajas As %Boolean) As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ListarPacientesRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ListarPacientesResponse
+
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ListarPacientesRequest).%New()
+  Set req.mostrarBajas = mostrarBajas
+
+	Do ..SendRequestSync("ProcesoPacientes", req, .rsp)
+
+	Quit rsp
+}
+
 /// Método que obtiene los datos de un paciente a partir de su ID
-Method buscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse [ WebMethod ]
+Method BuscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse [ WebMethod ]
 {
 	#dim req As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest
 	#dim rsp As cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDResponse
@@ -67,7 +81,7 @@ Method buscarPacientePorID(idPaciente As %Integer) As cysnet.clinicaDental.agend
 	Set req = ##class(cysnet.clinicaDental.agenda.msg.BuscarPacientePorIDRequest).%New()
 	Set req.idPaciente = idPaciente
   
-	Do ..SendRequestSync("PacientesSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoPacientes", req, .rsp)
 
 	Quit rsp
 }

@@ -1,4 +1,4 @@
-Class cysnet.clinicaDental.agenda.msg.ModificarCitaResponse Extends Ens.Response
+Class cysnet.clinicaDental.notificaciones.msg.GenerarNotificacionResponse Extends Ens.Response
 {
 
 Property mensaje As %String(MAXLEN = "");
@@ -9,8 +9,8 @@ Property error As %String(MAXLEN = "");
 
 Storage Default
 {
-<Data name="ModificarCitaResponseDefaultData">
-<Subscript>"ModificarCitaResponse"</Subscript>
+<Data name="GenerarNotificacionResponseDefaultData">
+<Subscript>"GenerarNotificacionResponse"</Subscript>
 <Value name="1">
 <Value>mensaje</Value>
 </Value>
@@ -21,7 +21,7 @@ Storage Default
 <Value>error</Value>
 </Value>
 </Data>
-<DefaultData>ModificarCitaResponseDefaultData</DefaultData>
+<DefaultData>GenerarNotificacionResponseDefaultData</DefaultData>
 <Type>%Storage.Persistent</Type>
 }
 

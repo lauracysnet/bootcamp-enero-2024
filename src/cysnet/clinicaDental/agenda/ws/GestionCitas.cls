@@ -18,50 +18,76 @@ Method cancelarCita(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.Cance
     set request = ##class(cysnet.clinicaDental.agenda.msg.CancelarCitaRequest).%New()
     set request.idCita = idCita
 
-	do ..SendRequestSync("CitasSQL", request, .response)
+	do ..SendRequestSync("ProcesoCitas", request, .response)
 	
 	quit response
 }
 
-Method modificarCita(idCita As %Integer, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse [ WebMethod ]
-{
-    #dim request As cysnet.clinicaDental.agenda.msg.ModificarCitaRequest
-    #dim response As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse
-
-    set request = ##class(cysnet.clinicaDental.agenda.msg.ModificarCitaRequest).%New()
-    set request.idCita = idCita
-    set request.fechaCita = fechaCita
-
-	do ..SendRequestSync("CitasSQL", request, .response)
-	
-	quit response
-}
-
-Method listarCitas(idPaciente As %Integer, mostrarCanceladas As %Boolean) As cysnet.clinicaDental.agenda.msg.ListarCitasResponse [ WebMethod ]
-{
-    #dim request As cysnet.clinicaDental.agenda.msg.ListarCitasRequest
-    #dim response As cysnet.clinicaDental.agenda.msg.ListarCitasResponse
-
-    set request = ##class(cysnet.clinicaDental.agenda.msg.ListarCitasRequest).%New()
-    set request.idPaciente = idPaciente
-    set request.mostrarCanceladas = mostrarCanceladas
-
-	do ..SendRequestSync("CitasSQL", request, .response)
-	
-	quit response
-}
-
-Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.AltaCitasRespose [ WebMethod ]
+Method altaCitas(idPaciente As %Integer, descCita As %String, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.AltaCitasResponse [ WebMethod ]
 {
 	#dim req As cysnet.clinicaDental.agenda.msg.AltaCitasRequest
-	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaCitasRespose
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaCitasResponse
 	
 	Set req = ##class(cysnet.clinicaDental.agenda.msg.AltaCitasRequest).%New()
 	Set req.idPaciente = idPaciente
     Set req.descCita = descCita
     Set req.fechaCita = fechaCita
 	
-	Do ..SendRequestSync("CitasSQL", req, .rsp)
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
+	
+	Quit rsp
+}
+
+Method ModificarCita(idCita As %Integer, fechaCita As %TimeStamp) As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ModificarCitaRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ModificarCitaResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ModificarCitaRequest).%New()
+  Set req.ID = idCita
+  Set req.fechaCita = fechaCita
+	
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
+	
+	Quit rsp
+}
+
+Method ListarCitas(idPaciente As %Integer, mostrarCanceladas As %Boolean) As cysnet.clinicaDental.agenda.msg.ListarCitasResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.ListarCitasRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.ListarCitasResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.ListarCitasRequest).%New()
+  Set req.idPaciente = idPaciente
+  Set req.mostrarCanceladas = mostrarCanceladas
+	
+	Do ..SendRequestSync("ProcesoCitas", req, .rsp)
+	
+	Quit rsp
+}
+
+Method AdmitirPaciente(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.AdmitirPacienteRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AdmitirPacienteResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.AdmitirPacienteRequest).%New()
+  Set req.idCita = idCita
+	
+	Do ..SendRequestSync("ProcesoAdmisionesCodigo", req, .rsp)
+	
+	Quit rsp
+}
+
+Method AltaPaciente(idCita As %Integer) As cysnet.clinicaDental.agenda.msg.AltaPacienteResponse [ WebMethod ]
+{
+	#dim req As cysnet.clinicaDental.agenda.msg.AltaPacienteRequest
+	#dim rsp As cysnet.clinicaDental.agenda.msg.AltaPacienteResponse
+	
+	Set req = ##class(cysnet.clinicaDental.agenda.msg.AltaPacienteRequest).%New()
+  Set req.idCita = idCita
+	
+	Do ..SendRequestSync("ProcesoAdmisionesCodigo", req, .rsp)
 	
 	Quit rsp
 }
